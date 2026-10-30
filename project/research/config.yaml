@@ -1,0 +1,71 @@
+track: "research"
+seed: 42
+
+data:
+  raw_path: "cleaned_data/leng_yield_cohort.csv"
+  basis: "dry_ash_free"
+  composition_transform: "ilr" # 'ilr' or 'clr'
+  features:
+    biopolymer_block:
+      - "Cel (%)"
+      - "Hem (%)"
+      - "Lig (%)"
+      - "Ext (%)"
+    proximate_block:
+      - "Ash (%)"
+      - "VM (%)"
+      - "FC (%)"
+    ultimate_block:
+      - "C (%)"
+      - "H (%)"
+      - "N (%)"
+      - "O (%)"
+    process_block:
+      - "T (C)"
+      - "RT (min)"
+      - "HR (C/min)"
+  targets:
+    primary: "Yield-char (%)"
+    secondary:
+      - "N-char (%)"
+      - "SSA-char (m2/g)"
+
+model:
+  feedstock_encoder:
+    hidden_dims: [128, 64]
+    latent_dim: 32
+    dropout: 0.1
+  process_encoder:
+    hidden_dims: [32, 16]
+    latent_dim: 16
+    dropout: 0.1
+  fusion_head:
+    hidden_dims: [128, 64]
+  ensemble_size: 5
+  heteroscedastic: true
+
+kinetics:
+  solver: "rk4"
+  num_steps: 30
+  learnable: true # Research track calibrates reaction kinetics end-to-end
+
+training:
+  epochs: 150
+  batch_size: 32
+  lr: 0.0008
+  weight_decay: 0.0001
+  num_collocation_points: 64
+  adaptive_weights: true
+
+acquisition:
+  strategy: "ehvi" # Expected Hypervolume Improvement / Multi-Objective Pareto
+  objectives:
+    - name: "Yield-char"
+      maximize: true
+    - name: "SSA-char"
+      maximize: true
+  batch_size: 4
+  bounds:
+    Temperature: [300.0, 900.0]
+    Residence_Time: [10.0, 180.0]
+    Heating_Rate: [5.0, 50.0]

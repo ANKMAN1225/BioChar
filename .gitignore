@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Large datasets / research caches not needed for the live demo
+Datasets/
+preliteraturesurvey/
+scratch/
+pinn_outputs/
+*.docx

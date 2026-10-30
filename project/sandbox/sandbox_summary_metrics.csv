@@ -1,0 +1,4 @@
+Strategy,Max Yield Found (wt%),Avg Specific Energy (kJ/kg),Avg Furnace Temp (C),Primary Focus
+Real-Life Track (Cost-Aware PINN),38.91603299580085,-439.6227567748547,341.25339323300705,High Yield + Low Energy Cost (Industrial Production)
+Research Track (Pareto Multi-Obj),40.77714376857013,-381.7166909451225,352.5646820172548,High Surface Area (SSA) + Carbon Quality Exploration
+Random Trial & Error (Lab Baseline),36.66481450984323,-278.0231490678127,559.1746200791888,Unguided / Ad-Hoc Sampling

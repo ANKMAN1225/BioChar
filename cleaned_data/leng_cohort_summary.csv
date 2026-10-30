@@ -1,0 +1,4 @@
+cohort,target,records_with_target,model_included_records,exact_duplicates_excluded,missing_source_doi_after_fill
+leng_yield,Yield-char (%),296,294,2,0
+leng_biochar_n,N-char (%),260,258,2,0
+leng_ssa,SSA-char (m2/g),284,282,2,0

@@ -1,0 +1,20 @@
+source_doi,leng_rows,experimental_reference_rows,experimental_data_rows_ref1,production_rows,overlap_flag,resolution_status,required_match_keys
+10.1016/j.biortech.2011.11.084,10,1,8,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.biortech.2012.12.012,6,1,7,0,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.biortech.2013.08.135,6,0,0,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.biortech.2013.12.084,5,1,5,0,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.biortech.2014.07.009,0,1,4,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.biortech.2015.05.054,18,0,0,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.biortech.2017.11.012,10,1,5,0,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.cej.2014.04.053,8,0,0,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.chemosphere.2012.05.085,5,0,0,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.energy.2019.05.214,4,1,8,0,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.jaap.2014.07.004,5,0,0,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.jaap.2014.09.016,9,0,0,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.jaap.2018.04.010,12,1,12,0,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.jaap.2018.06.018,12,1,21,0,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.jaap.2020.104945,6,0,0,2,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.jaap.2021.105088,0,1,27,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.jenvman.2014.08.003,0,1,8,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1016/j.wasman.2014.05.027,0,1,5,1,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row
+10.1111/gcbb.12030,0,1,22,2,True,block_extension_merge_pending_row_level_match,DOI; feedstock; temperature; residence time; heating rate; target value; source row

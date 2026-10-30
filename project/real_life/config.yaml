@@ -1,0 +1,74 @@
+track: "real_life"
+seed: 42
+
+data:
+  raw_path: "cleaned_data/leng_yield_cohort.csv"
+  basis: "dry"
+  feature_mode: "biopolymers" # Options: 'biopolymers' (Block 1) or 'proximate' (Block 2)
+  composition_transform: "clr" # 'clr' or 'ilr'
+  features:
+    biopolymer_block:
+      - "Cellulose"
+      - "Hemicellulose"
+      - "Lignin"
+      - "Extractives"
+    proximate_fallback_block:
+      - "Ash"
+      - "VM"
+      - "FC"
+    process_block:
+      - "Temperature"
+      - "Residence_Time"
+      - "Heating_Rate"
+    moisture_col: null # Defaults to 0.0 under dry basis
+  targets:
+    - name: "Yield-char"
+      unit: "wt%"
+
+model:
+  feedstock_encoder:
+    hidden_dims: [64, 32]
+    latent_dim: 16
+    dropout: 0.1
+  process_encoder:
+    hidden_dims: [32, 16]
+    latent_dim: 8
+    dropout: 0.1
+  fusion_head:
+    hidden_dims: [64, 32]
+  ensemble_size: 5
+  heteroscedastic: true
+
+kinetics:
+  solver: "rk4"
+  num_steps: 30
+  learnable: false
+
+energy_model:
+  Cp_biomass: 1.6
+  Cp_water: 4.184
+  H_evap: 2260.0
+  heat_recovery_efficiency: 0.50
+
+training:
+  epochs: 150
+  batch_size: 32
+  lr: 0.001
+  weight_decay: 0.0001
+  num_collocation_points: 64
+  adaptive_weights: true
+  initial_weights:
+    lambda_data: 1.0
+    lambda_kinetics: 0.4
+    lambda_monotonicity: 0.2
+
+acquisition:
+  strategy: "cost_aware_ucb"
+  beta_exploration: 1.96
+  cost_temperature_weight: 0.004
+  cost_residence_time_weight: 0.002
+  batch_size: 3
+  bounds:
+    Temperature: [300.0, 600.0]
+    Residence_Time: [10.0, 180.0]
+    Heating_Rate: [5.0, 50.0]

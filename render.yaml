@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: biochar-pinn-optimizer
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python project/demo_app.py
+    plan: free
