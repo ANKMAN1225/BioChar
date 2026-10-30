@@ -26,7 +26,7 @@ class CostAwareBatchUCB:
         cost_T_weight: float = 0.004,
         cost_RT_weight: float = 0.002,
         batch_size: int = 3,
-        num_candidates: int = 1000,
+        num_candidates: int = 5000,
     ):
         self.bounds = bounds
         self.beta = beta_exploration
