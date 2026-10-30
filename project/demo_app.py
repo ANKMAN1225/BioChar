@@ -383,47 +383,29 @@ class SimpleRequestHandler(http.server.BaseHTTPRequestHandler):
                 ash_weight=ash,
             )
 
-            # Generate response curve across 300 to 600 C at optimal RT & HR
+            # Generate response curve across 300 to 600 C vectorized in a single batch pass
             opt_rt = recs[0]["Residence_Time_min"]
             opt_hr = recs[0]["Heating_Rate_C_per_min"]
-            temps = np.linspace(300, 600, 13)
+            temps = np.linspace(300, 600, 9)
+            K = len(temps)
 
-            curve_pinn = []
+            cand_raw = np.zeros((K, 3), dtype=np.float32)
+            cand_raw[:, 0] = temps
+            cand_raw[:, 1] = opt_rt
+            cand_raw[:, 2] = opt_hr
+            cand_scaled = scalers["process"].transform(cand_raw)
 
-            for t_val in temps:
-                cand_raw = np.array([[t_val, opt_rt, opt_hr]], dtype=np.float32)
-                cand_scaled = scalers["process"].transform(cand_raw)
+            f_t = torch.tensor(np.tile(f_feat, (K, 1)), dtype=torch.float32, device=device)
+            p_s_t = torch.tensor(cand_scaled, dtype=torch.float32, device=device)
+            p_raw_t = torch.tensor(cand_raw, dtype=torch.float32, device=device)
+            bio_t = torch.tensor(np.tile(raw_bio_norm, (K, 1)), dtype=torch.float32, device=device)
+            ash_t = torch.tensor(np.full((K, 1), ash), dtype=torch.float32, device=device)
 
-                f_t = torch.tensor(f_feat, dtype=torch.float32, device=device)
-                p_s_t = torch.tensor(cand_scaled, dtype=torch.float32, device=device)
-                p_raw_t = torch.tensor(cand_raw, dtype=torch.float32, device=device)
-                bio_t = torch.tensor(raw_bio_norm.reshape(1, 4), dtype=torch.float32, device=device)
-                ash_t = torch.tensor([[ash]], dtype=torch.float32, device=device)
+            with torch.no_grad():
+                all_m = [m(f_t, p_s_t, p_raw_t, bio_t, ash_t)["yield_mean"].cpu().numpy().ravel() for m in models]
+                kin_y, _ = ode_solver(bio_t, p_raw_t[:, :1], p_raw_t[:, 1:2], p_raw_t[:, 2:3], ash_t)
 
-                means = []
-                for m in models:
-                    m.eval()
-                    with torch.no_grad():
-                        out = m(
-                            feedstock_x=f_t,
-                            process_x=p_s_t,
-                            raw_process=p_raw_t,
-                            raw_biopolymers=bio_t,
-                            ash_weight=ash_t,
-                        )
-                        means.append(out["yield_mean"].cpu().item())
-                
-                # Hybrid prediction (NN + Kinetics)
-                with torch.no_grad():
-                    kin_y, _ = ode_solver(
-                        biopolymer_weights=bio_t,
-                        T_peak_C=p_raw_t[:, :1],
-                        residence_time_min=p_raw_t[:, 1:2],
-                        heating_rate_C_per_min=p_raw_t[:, 2:3],
-                        ash_weight=ash_t,
-                    )
-                hybrid_y = 0.5 * np.mean(means) + 0.5 * kin_y.cpu().item()
-                curve_pinn.append(float(hybrid_y))
+            curve_pinn = list((0.5 * np.mean(all_m, axis=0) + 0.5 * kin_y.cpu().numpy().ravel()).astype(float))
 
             response_data = {
                 "recommendations": recs,
